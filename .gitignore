@@ -5,3 +5,5 @@ __pycache__/
 *.sqlite3
 migrations/
 Pipfile.lock
+*.env
+.DS_Store
