@@ -1,48 +1,34 @@
-from .app import create_app
-from .models import db, User, Guest, Episode, Appearance
+from server import app, db
+from server.models import User, Guest, Episode, Appearance
 from datetime import date
 
-def seed_database():
-    app = create_app()
+def seed_data():
     with app.app_context():
-        # Clear existing data
         db.drop_all()
         db.create_all()
         
-        # Create test user
-        user = User(username='testuser')
-        user.set_password('testpass')
-        db.session.add(user)
+        # Create users
+        user1 = User(username='admin')
+        user1.set_password('password123')
+        db.session.add(user1)
         
         # Create guests
-        guests = [
-            Guest(name='John Doe', occupation='Actor'),
-            Guest(name='Jane Smith', occupation='Musician'),
-            Guest(name='Bob Johnson', occupation='Comedian')
-        ]
-        db.session.add_all(guests)
+        guest1 = Guest(name='John Doe', occupation='Actor')
+        guest2 = Guest(name='Jane Smith', occupation='Musician')
+        db.session.add_all([guest1, guest2])
         
         # Create episodes
-        episodes = [
-            Episode(date=date(2023, 1, 1), number=101),
-            Episode(date=date(2023, 1, 2), number=102),
-            Episode(date=date(2023, 1, 3), number=103)
-        ]
-        db.session.add_all(episodes)
-        
-        db.session.commit()
+        episode1 = Episode(date=date(2023, 1, 1), number=101)
+        episode2 = Episode(date=date(2023, 1, 2), number=102)
+        db.session.add_all([episode1, episode2])
         
         # Create appearances
-        appearances = [
-            Appearance(rating=4, guest_id=1, episode_id=1),
-            Appearance(rating=5, guest_id=2, episode_id=1),
-            Appearance(rating=3, guest_id=3, episode_id=2),
-            Appearance(rating=5, guest_id=1, episode_id=3)
-        ]
-        db.session.add_all(appearances)
+        appearance1 = Appearance(rating=4, guest_id=1, episode_id=1)
+        appearance2 = Appearance(rating=5, guest_id=2, episode_id=2)
+        db.session.add_all([appearance1, appearance2])
         
         db.session.commit()
         print("Database seeded successfully!")
 
 if __name__ == '__main__':
-    seed_database()
+    seed_data()

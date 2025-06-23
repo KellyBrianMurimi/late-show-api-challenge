@@ -1,8 +1,6 @@
 from flask import jsonify
-from ..models import Guest
-from ..controllers import api
+from server.models import Guest
 
-@api.route('/guests', methods=['GET'])
 def get_guests():
     guests = Guest.query.all()
     return jsonify([{

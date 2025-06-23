@@ -1,27 +1,26 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
-from ..models import db, Appearance, Guest, Episode
-from ..controllers import api
+from server.models import Appearance, db
 
-@api.route('/appearances', methods=['POST'])
 @jwt_required()
 def create_appearance():
     data = request.get_json()
     
-    try:
-        appearance = Appearance(
-            rating=data['rating'],
-            guest_id=data['guest_id'],
-            episode_id=data['episode_id']
-        )
-    except ValueError as e:
-        return jsonify({"message": str(e)}), 400
-    
-    # Verify guest and episode exist
-    if not Guest.query.get(data['guest_id']):
-        return jsonify({"message": "Guest not found"}), 404
-    if not Episode.query.get(data['episode_id']):
-        return jsonify({"message": "Episode not found"}), 404
+    rating = data.get('rating')
+    guest_id = data.get('guest_id')
+    episode_id = data.get('episode_id')
+
+    if not all([rating, guest_id, episode_id]):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    if not (1 <= int(rating) <= 5):
+        return jsonify({'error': 'Rating must be between 1 and 5'}), 400
+
+    appearance = Appearance(
+        rating=rating,
+        guest_id=guest_id,
+        episode_id=episode_id
+    )
     
     db.session.add(appearance)
     db.session.commit()
