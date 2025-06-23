@@ -1,4 +1,4 @@
-from server import db
+from server.extensions import db
 
 class Episode(db.Model):
     __tablename__ = 'episodes'

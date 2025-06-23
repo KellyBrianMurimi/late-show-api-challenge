@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token
-from server.models import User, db
-from server import bcrypt
+from server.extensions import db, bcrypt
+from server.models.user import User
 
 def register():
     data = request.get_json()
@@ -31,5 +31,5 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid username or password'}), 401
 
-    access_token = user.generate_access_token()
+    access_token = create_access_token(identity=user.id)
     return jsonify({'access_token': access_token}), 200

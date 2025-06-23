@@ -6,12 +6,12 @@ name = "pypi"
 [packages]
 pipenv = "*"
 shell = "*"
+python-dotenv = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-jwt-extended = "*"
 psycopg2-binary = "*"
-python-dotenv = "*"
 
 [dev-packages]
 
