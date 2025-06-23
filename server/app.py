@@ -7,11 +7,14 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('server.config.Config')
     
+    # Initialize extensions
     init_app(app)
-    Migrate(app, db)
+    migrate = Migrate(app, db) 
     
+    # Register blueprints
     app.register_blueprint(api, url_prefix='/api')
     
+    # Error handlers
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({"message": "Resource not found"}), 404
