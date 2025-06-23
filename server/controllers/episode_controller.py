@@ -1,7 +1,11 @@
-from flask import jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from server.models import Episode, Appearance, db
+from flask import Blueprint, jsonify
+from server.models import Episode, Appearance
+from server.extensions import db
+from flask_jwt_extended import jwt_required
 
+episode_bp = Blueprint('episode', __name__)
+
+@episode_bp.route('/episodes', methods=['GET'])
 def get_episodes():
     episodes = Episode.query.all()
     return jsonify([{
@@ -10,6 +14,7 @@ def get_episodes():
         'number': ep.number
     } for ep in episodes]), 200
 
+@episode_bp.route('/episodes/<int:id>', methods=['GET'])
 def get_episode(id):
     episode = Episode.query.get_or_404(id)
     appearances = [{
@@ -29,6 +34,7 @@ def get_episode(id):
         'appearances': appearances
     }), 200
 
+@episode_bp.route('/episodes/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_episode(id):
     episode = Episode.query.get_or_404(id)

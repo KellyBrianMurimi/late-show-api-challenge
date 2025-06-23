@@ -1,7 +1,11 @@
-from flask import request, jsonify
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from server.models import Appearance, db
+from server.models import Appearance
+from server.extensions import db
 
+appearance_bp = Blueprint('appearance', __name__)
+
+@appearance_bp.route('/appearances', methods=['POST'])
 @jwt_required()
 def create_appearance():
     data = request.get_json()
