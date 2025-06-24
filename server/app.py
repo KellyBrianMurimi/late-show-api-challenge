@@ -6,13 +6,11 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
-    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
     bcrypt.init_app(app)
     
-    # Import and register blueprints
     from server.controllers.auth_controller import auth_bp
     from server.controllers.episode_controller import episode_bp
     from server.controllers.guest_controller import guest_bp

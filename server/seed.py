@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-# Add the project root to Python path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from server.app import app
@@ -14,22 +13,18 @@ def seed_data():
         db.drop_all()
         db.create_all()
         
-        # Create test user
         user = User(username='admin')
         user.set_password('password123')
         db.session.add(user)
         
-        # Create sample guests
         guest1 = Guest(name='John Doe', occupation='Actor')
         guest2 = Guest(name='Jane Smith', occupation='Musician')
         db.session.add_all([guest1, guest2])
         
-        # Create sample episodes
         episode1 = Episode(date=date(2023, 1, 1), number=101)
         episode2 = Episode(date=date(2023, 1, 2), number=102)
         db.session.add_all([episode1, episode2])
         
-        # Create sample appearances
         appearance1 = Appearance(rating=4, guest_id=1, episode_id=1)
         appearance2 = Appearance(rating=5, guest_id=2, episode_id=2)
         db.session.add_all([appearance1, appearance2])
